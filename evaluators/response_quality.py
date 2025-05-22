@@ -394,14 +394,32 @@ class ResponseQualityEvaluator(BaseEvaluator):
         Returns:
             True if text contains key elements, False otherwise
         """
+        # Define semantic synonyms for common business terms
+        synonyms = {
+            "pricing": ["price", "cost", "costs", "fee", "fees", "rate", "rates", "pricing", "charge"],
+            "information": ["info", "details", "data", "information"],
+            "timeline": ["timeline", "timeframe", "schedule", "duration", "time", "takes", "timing"],
+            "implementation": ["implementation", "setup", "deployment", "installation", "rollout"]
+        }
+        
         # Extract key elements from target
         key_terms = self._extract_key_terms(target)
         
-        # Check if text contains majority of key terms
-        matches = sum(1 for term in key_terms if term in text)
+        # Check if text contains key terms or their synonyms
+        matches = 0
+        for term in key_terms:
+            # Direct match
+            if term in text:
+                matches += 1
+            else:
+                # Check synonyms
+                term_synonyms = synonyms.get(term, [])
+                if any(syn in text for syn in term_synonyms):
+                    matches += 1
+        
         match_ratio = matches / len(key_terms) if key_terms else 0
         
-        return match_ratio >= 0.7  # 70% of key terms must be present
+        return match_ratio >= 0.7  # 70% of key terms (or synonyms) must be present
     
     def _extract_key_terms(self, text: str) -> List[str]:
         """

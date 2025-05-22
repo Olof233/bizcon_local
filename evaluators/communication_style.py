@@ -141,7 +141,13 @@ class CommunicationStyleEvaluator(BaseEvaluator):
             "dunno", "ya know", "like", "basically", "stuff", "things", "ok", "k"
         ]
         
-        unprofessional_count = sum(1 for term in unprofessional_terms if term in text.lower())
+        # Check for unprofessional terms with word boundaries
+        unprofessional_count = 0
+        for term in unprofessional_terms:
+            # Use word boundaries for better matching
+            pattern = r'\b' + re.escape(term) + r'\b'
+            if re.search(pattern, text.lower()):
+                unprofessional_count += 1
         
         # Check for excessive informality if formal is expected
         if expected_formality == "formal":
@@ -153,10 +159,18 @@ class CommunicationStyleEvaluator(BaseEvaluator):
         # Check for proper business language
         business_language_indicators = [
             "thank you", "please", "appreciate", "value", "assist", "help", 
-            "provide", "information", "understand", "solution", "service"
+            "provide", "information", "understand", "solution", "service",
+            "available", "options", "process", "team", "comprehensive", "training",
+            "support", "package", "implementation", "guide", "interest"
         ]
         
-        business_language_count = sum(1 for term in business_language_indicators if term in text.lower())
+        # Check for business language indicators with word boundaries
+        business_language_count = 0
+        for term in business_language_indicators:
+            # Use word boundaries for better matching
+            pattern = r'\b' + re.escape(term) + r'\b'
+            if re.search(pattern, text.lower()):
+                business_language_count += 1
         
         # Calculate professionalism score
         if unprofessional_count == 0 and business_language_count >= 3:
@@ -201,10 +215,13 @@ class CommunicationStyleEvaluator(BaseEvaluator):
         has_structure = any(indicator in text.lower() for indicator in ["first", "second", "finally", "in summary", "to summarize", "in conclusion"])
         
         # Calculate clarity score
-        if 10 <= avg_sentence_length <= 20 and complex_word_ratio < 0.05 and has_structure:
+        if 10 <= avg_sentence_length <= 20 and complex_word_ratio < 0.05:
             clarity_score = 2.0
             explanation = "Response is exceptionally clear, concise, and well-structured"
-        elif 8 <= avg_sentence_length <= 25 and complex_word_ratio < 0.1:
+        elif 8 <= avg_sentence_length <= 30 and complex_word_ratio < 0.15:
+            clarity_score = 1.5
+            explanation = "Response is clear and well-structured"
+        elif avg_sentence_length <= 35 and complex_word_ratio < 0.2:
             clarity_score = 1.0
             explanation = "Response is adequately clear and reasonably concise"
         else:
@@ -228,7 +245,9 @@ class CommunicationStyleEvaluator(BaseEvaluator):
         """
         # Define tone indicators
         tone_indicators = {
-            "professional": ["would like to", "we recommend", "suggest", "advise", "please consider"],
+            "professional": ["would like to", "we recommend", "suggest", "advise", "please consider", 
+                           "our team", "we provide", "available", "standard", "typically", 
+                           "during which", "through", "for your", "our"],
             "friendly": ["happy to", "glad to", "look forward to", "excited", "wonderful"],
             "formal": ["we regret to inform", "please be advised", "kindly note", "we request", "formally"],
             "empathetic": ["understand", "appreciate", "recognize", "know that", "hear your concern"],
@@ -291,7 +310,9 @@ class CommunicationStyleEvaluator(BaseEvaluator):
             if guideline_ratio >= 0.8:
                 return 2.0, "Response follows communication guidelines perfectly"
             elif guideline_ratio >= 0.5:
-                return 1.0, "Response follows most communication guidelines"
+                return 1.5, "Response follows most communication guidelines"
+            elif guideline_ratio >= 0.3:
+                return 1.0, "Response follows some communication guidelines"
             else:
                 return 0.0, "Response does not follow communication guidelines"
         
@@ -315,7 +336,10 @@ class CommunicationStyleEvaluator(BaseEvaluator):
         if adaptation_ratio >= 0.3 and guideline_ratio >= 0.8:
             adaptability_score = 2.0
             explanation = "Response excellently adapts to customer's language and follows guidelines"
-        elif adaptation_ratio >= 0.2 or guideline_ratio >= 0.5:
+        elif adaptation_ratio >= 0.2 and guideline_ratio >= 0.5:
+            adaptability_score = 1.5
+            explanation = "Response adapts well to context and follows guidelines"
+        elif adaptation_ratio >= 0.1 or guideline_ratio >= 0.5:
             adaptability_score = 1.0
             explanation = "Response shows some adaptation to context"
         else:

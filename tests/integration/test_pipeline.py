@@ -189,10 +189,30 @@ class TestEvaluationPipeline(unittest.TestCase):
         # Create mock models
         self.model_a = MockModel(model_name="model-a", responses={
             "Tell me about your product features.": {
-                "content": "Our product has advanced analytics with real-time dashboards and API integrations."
+                "content": "Our product has advanced analytics with real-time dashboards and API integrations.",
+                "tool_calls": [
+                    {
+                        "id": "call_01",
+                        "type": "function",
+                        "function": {
+                            "name": "knowledge_base",
+                            "arguments": '{"query": "product features"}'
+                        }
+                    }
+                ]
             },
             "What about pricing?": {
-                "content": "The product costs $1000/month for the enterprise tier."
+                "content": "The product costs $1000/month for the enterprise tier.",
+                "tool_calls": [
+                    {
+                        "id": "call_02",
+                        "type": "function",
+                        "function": {
+                            "name": "knowledge_base",
+                            "arguments": '{"query": "pricing"}'
+                        }
+                    }
+                ]
             }
         })
         

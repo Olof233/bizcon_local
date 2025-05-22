@@ -88,7 +88,10 @@ export MISTRAL_API_KEY="your-mistral-key"
 # Test without API keys (uses mock models)
 python test_framework.py
 
-# Test with real models
+# Run unit and integration tests
+python -m pytest tests/
+
+# Test with real models (requires API keys)
 python test_with_real_models.py
 ```
 
@@ -99,15 +102,20 @@ python run.py --scenarios product_inquiry_001 support_001 --verbose
 
 # Run full benchmark with custom config
 python run.py --config config/models.yaml --output results/
+
+# Using CLI interface directly
+python cli.py run --config config/models.yaml --output results/
 ```
 
 4. **Explore available options:**
 ```bash
 # List all available scenarios
 python run.py --list-scenarios
+# or: python cli.py list-scenarios
 
-# List supported models
+# List supported models  
 python run.py --list-models
+# or: python cli.py list-models
 ```
 
 ### Configuration
@@ -248,7 +256,11 @@ Summary of Results:
 
 ### Parallel Evaluation
 ```bash
-python run.py --parallel --scenarios product_inquiry_001 support_001 contract_001
+# Run multiple scenarios in parallel
+python run.py --scenarios product_inquiry_001 support_001 contract_001 --parallel
+
+# Or using CLI directly
+python cli.py run --scenarios product_inquiry_001 support_001 --parallel
 ```
 
 ### Custom Model Parameters
@@ -287,8 +299,13 @@ We welcome contributions from the community! Here's how you can help:
 ```bash
 git clone https://github.com/Olib-AI/bizcon.git
 cd bizcon
-pip install -e ".[dev]"
-pytest tests/
+pip install -e .
+
+# Run framework validation (no API keys needed)
+python test_framework.py
+
+# Run full test suite  
+python -m pytest tests/
 ```
 
 ### Contribution Guidelines
@@ -300,6 +317,31 @@ pytest tests/
 6. Commit your changes (`git commit -m 'Add amazing feature'`)
 7. Push to the branch (`git push origin feature/amazing-feature`)
 8. Open a Pull Request
+
+## 🧪 Testing & Validation
+
+### Test Suite
+The framework includes comprehensive testing:
+- **Unit Tests**: 12 tests covering evaluators, scenarios, and tools
+- **Integration Tests**: End-to-end pipeline validation  
+- **Framework Tests**: Mock model validation without API keys
+
+### Running Tests
+```bash
+# Quick framework validation (no API keys required)
+python test_framework.py
+
+# Full test suite  
+python -m pytest tests/ -v
+
+# Test specific components
+python -m pytest tests/unit/test_evaluators.py
+python -m pytest tests/integration/test_pipeline.py
+```
+
+### Known Issues
+- **CLI Entry Point**: Package installation issue affects `bizcon` command. Use `python cli.py` directly
+- **Visualization Reports**: Minor issue in report generation that doesn't affect core functionality
 
 ## 📄 License
 
