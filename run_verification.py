@@ -45,49 +45,49 @@ def print_status(component: str, status: str, details: Optional[str] = None):
 
 def check_models():
     """Check that model clients are properly implemented."""
-    from models import get_model_client, list_supported_models
-    
-    # Check model registry
-    supported_models = list_supported_models()
-    print_status("Models Registry", "INFO", f"Found {sum(len(models) for models in supported_models.values())} models across {len(supported_models)} providers")
-    
-    # Check model implementations
-    model_classes = []
-    for provider, models in supported_models.items():
-        try:
-            # Check first model from each provider
-            if models:
-                model = get_model_client(provider, models[0], api_key="dummy_key_for_testing")
-                model_classes.append(model.__class__.__name__)
-        except Exception as e:
-            print_status(f"Model Provider: {provider}", "ERROR", f"Implementation error: {str(e)}")
-            continue
-    
-    if model_classes:
-        print_status("Model Implementations", "OK", f"Found implementations: {', '.join(model_classes)}")
-    else:
-        print_status("Model Implementations", "ERROR", "No working model implementations found")
+    try:
+        from models import get_model_client, list_supported_models
+        
+        # Check model registry
+        supported_models = list_supported_models()
+        print_status("Models Registry", "INFO", f"Found {sum(len(models) for models in supported_models.values())} models across {len(supported_models)} providers")
+        
+        # Check model implementations
+        model_classes = []
+        for provider, models in supported_models.items():
+            try:
+                # Check first model from each provider
+                if models:
+                    model = get_model_client(provider, models[0], api_key="dummy_key_for_testing")
+                    model_classes.append(model.__class__.__name__)
+            except Exception as e:
+                print_status(f"Model Provider: {provider}", "ERROR", f"Implementation error: {str(e)}")
+                continue
+        
+        if model_classes:
+            print_status("Model Implementations", "OK", f"Found implementations: {', '.join(model_classes)}")
+        else:
+            print_status("Model Implementations", "ERROR", "No working model implementations found")
+    except Exception as e:
+        print_status("Models Module", "ERROR", f"Failed to import models module: {str(e)}")
 
 
 def check_scenarios():
     """Check that scenarios are properly implemented."""
-    from scenarios import _SCENARIO_REGISTRY
-    
-    # Check scenario registry
-    scenario_count = len(_SCENARIO_REGISTRY)
-    print_status("Scenario Registry", "INFO", f"Found {scenario_count} registered scenarios")
-    
-    # Load a few scenarios to verify implementation
     try:
+        from scenarios import _SCENARIO_REGISTRY, load_scenarios
+        
+        # Check scenario registry
+        scenario_count = len(_SCENARIO_REGISTRY)
+        print_status("Scenario Registry", "INFO", f"Found {scenario_count} registered scenarios")
+        
+        # Load a few scenarios to verify implementation
         if _SCENARIO_REGISTRY:
             # Take first 2 scenarios from registry
             scenario_ids = list(_SCENARIO_REGISTRY.keys())[:2]
             
             # Instantiate scenarios
-            scenarios = []
-            for scenario_id in scenario_ids:
-                scenario_class = _SCENARIO_REGISTRY[scenario_id]
-                scenarios.append(scenario_class(scenario_id=scenario_id))
+            scenarios = load_scenarios(scenario_ids)
             
             if scenarios:
                 print_status("Scenario Loading", "OK", 
@@ -107,60 +107,66 @@ def check_scenarios():
             else:
                 print_status("Scenario Loading", "ERROR", "Failed to load any scenarios")
     except Exception as e:
-        print_status("Scenario Loading", "ERROR", f"Error: {str(e)}")
+        print_status("Scenarios Module", "ERROR", f"Failed to import scenarios module: {str(e)}")
 
 
 def check_evaluators():
     """Check that evaluators are properly implemented."""
-    from evaluators import get_all_evaluators, EVALUATOR_REGISTRY
-    
-    # Check evaluator registry
-    evaluator_count = len(EVALUATOR_REGISTRY)
-    print_status("Evaluator Registry", "INFO", f"Found {evaluator_count} registered evaluators")
-    
     try:
-        # Load all evaluators
-        evaluators = get_all_evaluators()
-        evaluator_names = [e.name for e in evaluators]
+        from evaluators import get_all_evaluators, EVALUATOR_REGISTRY
         
-        if evaluators:
-            print_status("Evaluator Loading", "OK", f"Successfully loaded: {', '.join(evaluator_names)}")
-        else:
-            print_status("Evaluator Loading", "ERROR", "Failed to load any evaluators")
+        # Check evaluator registry
+        evaluator_count = len(EVALUATOR_REGISTRY)
+        print_status("Evaluator Registry", "INFO", f"Found {evaluator_count} registered evaluators")
+        
+        try:
+            # Load all evaluators
+            evaluators = get_all_evaluators()
+            evaluator_names = [e.name for e in evaluators]
+            
+            if evaluators:
+                print_status("Evaluator Loading", "OK", f"Successfully loaded: {', '.join(evaluator_names)}")
+            else:
+                print_status("Evaluator Loading", "ERROR", "Failed to load any evaluators")
+        except Exception as e:
+            print_status("Evaluator Loading", "ERROR", f"Error: {str(e)}")
     except Exception as e:
-        print_status("Evaluator Loading", "ERROR", f"Error: {str(e)}")
+        print_status("Evaluators Module", "ERROR", f"Failed to import evaluators module: {str(e)}")
 
 
 def check_tools():
     """Check that business tools are properly implemented."""
-    from tools import get_default_tools
-    
     try:
-        # Load all tools
-        tools = get_default_tools()
+        from tools import get_default_tools
         
-        if tools:
-            print_status("Tools Loading", "OK", f"Successfully loaded {len(tools)} tools: {', '.join(tools.keys())}")
+        try:
+            # Load all tools
+            tools = get_default_tools()
             
-            # Check a few key tools
-            key_tools = ["knowledge_base", "product_catalog"]
-            for tool_id in key_tools:
-                if tool_id in tools:
-                    tool = tools[tool_id]
-                    # Try a basic call to make sure it works
-                    try:
-                        if tool_id == "knowledge_base":
-                            result = tool.call({"query": "test"})
-                        elif tool_id == "product_catalog":
-                            result = tool.call({"product_id": "test"})
-                        
-                        print_status(f"Tool: {tool.name}", "OK", "Basic call succeeded")
-                    except Exception as e:
-                        print_status(f"Tool: {tool.name}", "WARNING", f"Basic call failed: {str(e)}")
-        else:
-            print_status("Tools Loading", "ERROR", "Failed to load any tools")
+            if tools:
+                print_status("Tools Loading", "OK", f"Successfully loaded {len(tools)} tools: {', '.join(tools.keys())}")
+                
+                # Check a few key tools
+                key_tools = ["knowledge_base", "product_catalog"]
+                for tool_id in key_tools:
+                    if tool_id in tools:
+                        tool = tools[tool_id]
+                        # Try a basic call to make sure it works
+                        try:
+                            if tool_id == "knowledge_base":
+                                result = tool.call({"query": "test"})
+                            elif tool_id == "product_catalog":
+                                result = tool.call({"product_id": "test"})
+                            
+                            print_status(f"Tool: {tool.name}", "OK", "Basic call succeeded")
+                        except Exception as e:
+                            print_status(f"Tool: {tool.name}", "WARNING", f"Basic call failed: {str(e)}")
+            else:
+                print_status("Tools Loading", "ERROR", "Failed to load any tools")
+        except Exception as e:
+            print_status("Tools Loading", "ERROR", f"Error: {str(e)}")
     except Exception as e:
-        print_status("Tools Loading", "ERROR", f"Error: {str(e)}")
+        print_status("Tools Module", "ERROR", f"Failed to import tools module: {str(e)}")
 
 
 def check_pipeline():
