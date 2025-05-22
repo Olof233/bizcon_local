@@ -79,6 +79,7 @@ class ToolUsageEvaluator(BaseEvaluator):
                     "score": self.max_score,
                     "normalized_score": self.normalize_score(self.max_score),
                     "explanation": "No tools were expected or used for this turn.",
+                    "max_possible": self.max_score,
                     "details": {
                         "selection": {"score": 3.0, "explanation": "Correctly didn't use tools when none were expected"},
                         "parameters": {"score": 3.0, "explanation": "N/A - No tools used"},
@@ -92,6 +93,7 @@ class ToolUsageEvaluator(BaseEvaluator):
                     "score": 0.0,
                     "normalized_score": self.normalize_score(0.0),
                     "explanation": "Used tools when none were expected for this turn.",
+                    "max_possible": self.max_score,
                     "details": {
                         "selection": {"score": 0.0, "explanation": "Unnecessarily used tools when none were expected"},
                         "parameters": {"score": 0.0, "explanation": "N/A - No tools should have been used"},
@@ -106,6 +108,7 @@ class ToolUsageEvaluator(BaseEvaluator):
                 "score": 0.0,
                 "normalized_score": self.normalize_score(0.0),
                 "explanation": "Failed to use tools when they were expected for this turn.",
+                "max_possible": self.max_score,
                 "details": {
                     "selection": {"score": 0.0, "explanation": "Failed to use any tools when they were expected"},
                     "parameters": {"score": 0.0, "explanation": "N/A - No tools used"},
@@ -150,6 +153,7 @@ class ToolUsageEvaluator(BaseEvaluator):
                 efficiency_explanation,
                 interpretation_explanation
             ),
+            "max_possible": self.max_score,
             "details": {
                 "selection": {"score": selection_score, "explanation": selection_explanation},
                 "parameters": {"score": parameter_score, "explanation": parameter_explanation},

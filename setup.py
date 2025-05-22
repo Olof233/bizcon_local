@@ -10,6 +10,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Olib-AI/bizcon",
     packages=find_packages(),
+    py_modules=['cli'],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -41,7 +42,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "bizcon=bizcon.cli:main",
+            "bizcon=cli:main",
         ],
     },
     python_requires=">=3.8",

@@ -36,5 +36,6 @@ CLAUDE.md
 # bizCon specific
 output/
 test_output/
+validation_output/
 .env
 config/secrets.yaml

@@ -103,19 +103,19 @@ python run.py --scenarios product_inquiry_001 support_001 --verbose
 # Run full benchmark with custom config
 python run.py --config config/models.yaml --output results/
 
-# Using CLI interface directly
-python cli.py run --config config/models.yaml --output results/
+# Using CLI interface directly  
+bizcon run --config config/models.yaml --output results/
 ```
 
 4. **Explore available options:**
 ```bash
 # List all available scenarios
 python run.py --list-scenarios
-# or: python cli.py list-scenarios
+# or: bizcon list-scenarios
 
 # List supported models  
 python run.py --list-models
-# or: python cli.py list-models
+# or: bizcon list-models
 ```
 
 ### Configuration
@@ -260,7 +260,7 @@ Summary of Results:
 python run.py --scenarios product_inquiry_001 support_001 contract_001 --parallel
 
 # Or using CLI directly
-python cli.py run --scenarios product_inquiry_001 support_001 --parallel
+bizcon run --scenarios product_inquiry_001 support_001 --parallel
 ```
 
 ### Custom Model Parameters
@@ -349,9 +349,9 @@ python -m pytest tests/integration/test_pipeline.py
 - Data integrity: **VERIFIED** (all JSON files valid)
 - CLI functionality: **WORKING** (scenario/model listing operational)
 
-### Known Issues  
-- **CLI Entry Point**: Package installation issue affects `bizcon` command. Use `python cli.py` directly
+### Status  
 - All core functionality has been tested and validated ✅
+- CLI entry point fully operational via `bizcon` command ✅
 
 ## 📄 License
 

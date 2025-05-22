@@ -10,9 +10,6 @@ import yaml
 import json
 from pathlib import Path
 
-# Add the parent directory to the path for importing
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
 from core.pipeline import EvaluationPipeline
 from models import get_model_client, list_supported_models
 from scenarios import load_scenarios, list_available_scenarios
