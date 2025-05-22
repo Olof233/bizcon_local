@@ -55,11 +55,11 @@ class EvaluationPipeline:
         
     def _get_default_evaluators(self) -> List[BaseEvaluator]:
         """Get the default set of evaluators."""
-        from ..evaluators.response_quality import ResponseQualityEvaluator
-        from ..evaluators.communication_style import CommunicationStyleEvaluator
-        from ..evaluators.tool_usage import ToolUsageEvaluator
-        from ..evaluators.business_value import BusinessValueEvaluator
-        from ..evaluators.performance import PerformanceEvaluator
+        from evaluators.response_quality import ResponseQualityEvaluator
+        from evaluators.communication_style import CommunicationStyleEvaluator
+        from evaluators.tool_usage import ToolUsageEvaluator
+        from evaluators.business_value import BusinessValueEvaluator
+        from evaluators.performance import PerformanceEvaluator
         
         return [
             ResponseQualityEvaluator(weight=0.25),

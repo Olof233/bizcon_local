@@ -10,9 +10,9 @@ from typing import List, Type
 # Add the parent directory to the Python path to ensure imports work
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-from bizcon.scenarios.base import BusinessScenario
-from bizcon.scenarios import _SCENARIO_REGISTRY
-from bizcon.scenarios.multi_department import EnterpriseProductLaunchScenario, CrossFunctionalProjectScenario, CrossDepartmentCollaborationScenario
+from scenarios.base import BusinessScenario
+from scenarios import _SCENARIO_REGISTRY
+from scenarios.multi_department import EnterpriseProductLaunchScenario, CrossFunctionalProjectScenario, CrossDepartmentCollaborationScenario
 
 
 class TestScenarios(unittest.TestCase):

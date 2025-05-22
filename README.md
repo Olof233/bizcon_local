@@ -16,25 +16,6 @@ bizCon is a comprehensive evaluation framework for benchmarking Large Language M
 pip install -e .
 ```
 
-## Usage
-
-```python
-from bizcon.core.pipeline import EvaluationPipeline
-from bizcon.models import OpenAIClient, AnthropicClient
-from bizcon.scenarios import load_scenario
-
-# Load models and scenarios
-models = [OpenAIClient("gpt-4"), AnthropicClient("claude-3-sonnet")]
-scenario = load_scenario("product_inquiry_001")
-
-# Run evaluation
-pipeline = EvaluationPipeline(models, [scenario])
-results = pipeline.run()
-
-# Generate report
-pipeline.generate_report("output/comparison_report")
-```
-
 ## Documentation
 
 For detailed documentation, see the [docs](docs/) directory.

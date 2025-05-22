@@ -11,9 +11,9 @@ from pathlib import Path
 # Add parent directory to path for importing
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from bizcon.core.pipeline import EvaluationPipeline
-from bizcon.scenarios.base import BusinessScenario
-from bizcon.models.base import ModelClient
+from core.pipeline import EvaluationPipeline
+from scenarios.base import BusinessScenario
+from models.base import ModelClient
 
 
 class MockModel(ModelClient):

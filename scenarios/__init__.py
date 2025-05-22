@@ -113,7 +113,7 @@ def discover_scenarios() -> None:
             continue
         
         module_name = os.path.basename(file_path)[:-3]  # Remove .py extension
-        module_path = f"bizcon.scenarios.{module_name}"
+        module_path = f"scenarios.{module_name}"
         
         try:
             module = importlib.import_module(module_path)

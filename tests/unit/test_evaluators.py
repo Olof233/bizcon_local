@@ -10,12 +10,12 @@ from pathlib import Path
 # Add parent directory to path for importing
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from bizcon.evaluators.base import BaseEvaluator
-from bizcon.evaluators.response_quality import ResponseQualityEvaluator
-from bizcon.evaluators.communication_style import CommunicationStyleEvaluator
-from bizcon.evaluators.tool_usage import ToolUsageEvaluator
-from bizcon.evaluators.business_value import BusinessValueEvaluator
-from bizcon.evaluators.performance import PerformanceEvaluator
+from evaluators.base import BaseEvaluator
+from evaluators.response_quality import ResponseQualityEvaluator
+from evaluators.communication_style import CommunicationStyleEvaluator
+from evaluators.tool_usage import ToolUsageEvaluator
+from evaluators.business_value import BusinessValueEvaluator
+from evaluators.performance import PerformanceEvaluator
 
 
 class MockScenario:
