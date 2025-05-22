@@ -9,7 +9,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 import uuid
 
-from bizcon.tools.base import BusinessTool
+from .base import BusinessTool
 
 
 class OrderManagementTool(BusinessTool):

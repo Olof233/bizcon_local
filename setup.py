@@ -16,6 +16,8 @@ setup(
         "tqdm",
         "pytest",
         "tiktoken",
+        "pdfkit",
+        "markdown",
     ],
     entry_points={
         "console_scripts": [

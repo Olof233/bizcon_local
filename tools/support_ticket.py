@@ -8,7 +8,7 @@ import random
 import datetime
 import uuid
 
-from bizcon.tools.base import BusinessTool
+from .base import BusinessTool
 
 
 class SupportTicketTool(BusinessTool):

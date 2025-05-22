@@ -16,7 +16,7 @@ import pandas as pd
 import numpy as np
 from flask import Flask, render_template, send_from_directory, jsonify
 
-from bizcon.visualization.charts import (
+from visualization.charts import (
     model_comparison_radar,
     scenario_comparison_heatmap,
     tool_usage_bar_chart,

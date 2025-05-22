@@ -14,11 +14,11 @@ from tqdm import tqdm
 from .runner import ScenarioRunner
 
 # Use absolute imports for other modules since they're at the same level as core
-from ..models.base import ModelClient
-from ..scenarios.base import BusinessScenario
-from ..evaluators.base import BaseEvaluator
-from ..tools.base import BusinessTool
-from ..visualization.report import generate_report
+from models.base import ModelClient
+from scenarios.base import BusinessScenario
+from evaluators.base import BaseEvaluator
+from tools.base import BusinessTool
+from visualization.report import generate_report
 
 
 class EvaluationPipeline:
