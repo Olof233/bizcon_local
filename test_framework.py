@@ -21,31 +21,97 @@ from core.pipeline import EvaluationPipeline
 
 
 class MockModelClient(ModelClient):
-    """Mock model client for testing purposes."""
+    """Mock model client for testing purposes with differentiated behavior."""
     
     def __init__(self, model_name="mock-model", **kwargs):
         super().__init__(model_name=model_name, **kwargs)
         self.calls_made = 0
+        self.model_personality = self._get_model_personality()
+    
+    def _get_model_personality(self):
+        """Define different personalities/behaviors for different mock models."""
+        if "gpt-4" in self.model_name.lower():
+            return {
+                "style": "detailed",
+                "tool_frequency": 0.7,  # Uses tools 70% of the time
+                "token_multiplier": 1.2,
+                "response_length": "verbose",
+                "quality_factor": 0.9  # Higher quality responses
+            }
+        elif "claude" in self.model_name.lower():
+            return {
+                "style": "concise",
+                "tool_frequency": 0.5,  # Uses tools 50% of the time
+                "token_multiplier": 0.8,
+                "response_length": "balanced",
+                "quality_factor": 0.85
+            }
+        elif "mistral" in self.model_name.lower():
+            return {
+                "style": "technical",
+                "tool_frequency": 0.3,  # Uses tools 30% of the time
+                "token_multiplier": 0.6,
+                "response_length": "brief",
+                "quality_factor": 0.75
+            }
+        else:
+            return {
+                "style": "generic",
+                "tool_frequency": 0.4,
+                "token_multiplier": 1.0,
+                "response_length": "balanced",
+                "quality_factor": 0.8
+            }
     
     def generate_response(self, messages, tools=None):
-        """Generate a mock response."""
+        """Generate a mock response with model-specific characteristics."""
         self.calls_made += 1
         
-        # Simple mock response based on conversation
+        # Get last message for context
         last_message = messages[-1]["content"] if messages else ""
+        personality = self.model_personality
         
-        response = {
-            "content": f"Thank you for your inquiry. I'll help you with that. Based on your request about '{last_message[:50]}...', let me provide you with relevant information."
-        }
+        # Generate response based on model personality and accuracy
+        if personality["style"] == "detailed":
+            # GPT-4 style: Detailed but sometimes includes incorrect facts to test accuracy scoring
+            if self.calls_made == 1:
+                content = f"Thank you for your detailed inquiry about DataInsight Enterprise. This is a comprehensive business intelligence platform designed for financial services. The typical implementation timeline is 8-10 weeks (incorrect - should be 10-12), and our base pricing starts at $1500 per user per month (incorrect - should be $1200). Let me provide you with detailed information about our key features including real-time analytics, automated reporting, and regulatory compliance tools."
+            else:
+                content = f"I'll provide comprehensive follow-up information. Based on your specific requirements, I recommend scheduling a detailed consultation to discuss implementation phases, training requirements, and ongoing support options. Our enterprise solution includes 24/7 technical support and dedicated account management."
+        elif personality["style"] == "concise":
+            # Claude style: Accurate but sometimes missing required elements
+            if self.calls_made == 1:
+                content = f"I'll help with your DataInsight Enterprise inquiry. Our solution offers real-time analytics and automated reporting capabilities. The implementation typically takes 10-12 weeks with base pricing at $1200 per user monthly. Would you like me to check specific pricing for your organization size?"
+            else:
+                content = f"I can provide additional details about features and implementation phases. Our support team is available to schedule a consultation call."
+        elif personality["style"] == "technical":
+            # Mistral style: Brief but highly accurate technical details
+            if self.calls_made == 1:
+                content = f"DataInsight Enterprise specifications: Core platform supports real-time data processing, automated report generation, regulatory compliance modules. Implementation timeline: 10-12 weeks standard deployment. Pricing model: per-user subscription at $1200 base rate. Technical requirements and integration capabilities available upon request."
+            else:
+                content = f"Technical implementation details: Phase-based deployment methodology, API integration support, cloud-native architecture. Support includes technical documentation and integration assistance."
+        else:
+            content = f"Regarding '{last_message[:30]}...', I can assist you with this request."
         
-        # Sometimes include mock tool calls
-        if tools and self.calls_made % 2 == 0:
+        response = {"content": content}
+        
+        # Add tool calls based on model's tool usage frequency
+        import random
+        if tools and random.random() < personality["tool_frequency"]:
+            # Choose tools more strategically based on the conversation turn
+            if self.calls_made == 1:
+                tool_options = ["product_catalog", "pricing_calculator"]
+            else:
+                tool_options = ["knowledge_base", "customer_history", "scheduler"]
+            
+            selected_tool = random.choice(tool_options)
+            
             response["tool_calls"] = [
                 {
-                    "id": f"call_{self.calls_made}",
+                    "id": f"call_{self.calls_made}_{self.model_name}",
                     "function": {
-                        "name": "knowledge_base",
-                        "arguments": '{"query": "test query"}'
+                        "name": selected_tool,
+                        "arguments": '{"query": "DataInsight Enterprise details"}' if selected_tool in ["product_catalog", "knowledge_base"] else '{"customer_size": "enterprise"}'
                     }
                 }
             ]
@@ -53,13 +119,23 @@ class MockModelClient(ModelClient):
         return response
     
     def get_usage_stats(self):
-        """Get usage statistics."""
+        """Get usage statistics with model-specific variations."""
+        personality = self.model_personality
+        base_tokens = self.calls_made * 80
+        
+        # Apply model-specific token multipliers
+        total_tokens = int(base_tokens * personality["token_multiplier"])
+        prompt_tokens = int(total_tokens * 0.6)
+        completion_tokens = total_tokens - prompt_tokens
+        
         return {
             "model_name": self.model_name,
-            "total_tokens": self.calls_made * 100,
-            "prompt_tokens": self.calls_made * 60,
-            "completion_tokens": self.calls_made * 40,
-            "total_calls": self.calls_made
+            "total_tokens": total_tokens,
+            "prompt_tokens": prompt_tokens,
+            "completion_tokens": completion_tokens,
+            "total_calls": self.calls_made,
+            "avg_tokens_per_call": total_tokens / max(self.calls_made, 1),
+            "tool_usage_rate": personality["tool_frequency"]
         }
     
     def reset_stats(self):
@@ -67,8 +143,9 @@ class MockModelClient(ModelClient):
         self.calls_made = 0
     
     def get_token_count(self, text):
-        """Get token count for text (mock implementation)."""
-        return len(text.split()) * 1.3  # Rough approximation
+        """Get token count for text with model-specific calculations."""
+        base_count = len(text.split()) * 1.3
+        return int(base_count * self.model_personality["token_multiplier"])
 
 
 def test_framework():
@@ -113,11 +190,13 @@ def test_framework():
     try:
         models = [
             MockModelClient("mock-gpt-4"),
-            MockModelClient("mock-claude-3")
+            MockModelClient("mock-claude-3"),
+            MockModelClient("mock-mistral-large")
         ]
         print(f"✓ Created {len(models)} mock models successfully")
         for model in models:
-            print(f"  - {model.model_name}")
+            personality = model.model_personality
+            print(f"  - {model.model_name} (style: {personality['style']}, tool_freq: {personality['tool_frequency']})")
     except Exception as e:
         print(f"✗ Failed to create mock models: {e}")
         return False
@@ -141,10 +220,20 @@ def test_framework():
         print(f"  - Scenarios tested: {len(results['scenarios'])}")
         print(f"  - Total duration: {results['duration']:.2f} seconds")
         
-        # Print summary
+        # Print summary with detailed stats
         print("\n  Summary scores:")
         for model_id, score in results["summary"]["overall_scores"].items():
             print(f"    {model_id}: {score:.2f}/10")
+        
+        # Show model usage stats to demonstrate differences
+        print("\n  Model usage statistics:")
+        for model in models:
+            stats = model.get_usage_stats()
+            print(f"    {stats['model_name']}:")
+            print(f"      - Total tokens: {stats['total_tokens']}")
+            print(f"      - Calls made: {stats['total_calls']}")
+            print(f"      - Avg tokens/call: {stats['avg_tokens_per_call']:.1f}")
+            print(f"      - Tool usage rate: {stats['tool_usage_rate']:.0%}")
         
     except Exception as e:
         print(f"✗ Pipeline failed: {e}")

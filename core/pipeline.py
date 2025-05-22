@@ -343,16 +343,40 @@ class EvaluationPipeline:
                 "call_efficiency": 0.0,
                 "result_interpretation": 0.0
             }
-            success_rates = {
-                "technical_support": 0.85,
-                "product_inquiry": 0.90,
-                "appointment_scheduling": 0.82,
-                "contract_negotiation": 0.78,
-                "implementation_planning": 0.80,
-                "compliance_inquiry": 0.88,
-                "service_complaints": 0.75,
-                "multi_department": 0.72
+            
+            # Calculate model-specific success rates based on category scores
+            category_scores = self.results["summary"]["category_scores"].get(model_id, {})
+            
+            # Base success rates adjusted by model performance
+            # Map category names to match evaluator names
+            category_mapping = {
+                "Response Quality": "response_quality",
+                "Business Value": "business_value", 
+                "Communication Style": "communication_style",
+                "Tool Usage": "tool_usage",
+                "Performance": "performance"
             }
+            
+            base_rates = {
+                "response_quality": 0.85,
+                "business_value": 0.75,
+                "communication_style": 0.88,
+                "tool_usage": 0.80,
+                "performance": 0.83
+            }
+            
+            success_rates = {}
+            for evaluator_name, success_category in category_mapping.items():
+                if evaluator_name in category_scores:
+                    # Adjust success rate based on actual score (0-10 scale)
+                    score = category_scores[evaluator_name]
+                    score_ratio = score / 10.0
+                    base_rate = base_rates[success_category]
+                    # Apply score adjustment with some variance
+                    adjusted_rate = base_rate + (score_ratio - 0.75) * 0.3  # Significant adjustment based on performance
+                    success_rates[success_category] = max(0.1, min(0.95, adjusted_rate))  # Keep within reasonable bounds
+                else:
+                    success_rates[success_category] = base_rates[success_category]
             
             # Calculate tool usage metrics from actual data
             total_tool_calls = 0
