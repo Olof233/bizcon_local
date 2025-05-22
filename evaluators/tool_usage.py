@@ -52,10 +52,10 @@ class ToolUsageEvaluator(BaseEvaluator):
             Dictionary with scores and explanation
         """
         # Get response text
-        response_text = response.get("response", "")
+        response_text = response.get("content", "")
         
         # Get expected tool calls from scenario's ground truth
-        ground_truth = scenario.get_ground_truth(turn_index)
+        ground_truth = scenario.get_ground_truth()
         expected_tool_calls = ground_truth.get("expected_tool_calls", [])
         
         # Initialize scores and explanations

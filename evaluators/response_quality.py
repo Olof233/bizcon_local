@@ -52,10 +52,10 @@ class ResponseQualityEvaluator(BaseEvaluator):
             Dictionary with scores and explanation
         """
         # Get response text
-        response_text = response.get("response", "")
+        response_text = response.get("content", "")
         
         # Get ground truth data for this turn
-        ground_truth = scenario.get_ground_truth(turn_index)
+        ground_truth = scenario.get_ground_truth()
         expected_facts = ground_truth.get("expected_facts", [])
         required_elements = ground_truth.get("required_elements", [])
         

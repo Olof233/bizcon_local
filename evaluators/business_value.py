@@ -50,10 +50,10 @@ class BusinessValueEvaluator(BaseEvaluator):
             Dictionary with scores and explanation
         """
         # Get response text
-        response_text = response.get("response", "")
+        response_text = response.get("content", "")
         
         # Get expected business value from scenario's ground truth
-        ground_truth = scenario.get_ground_truth(turn_index)
+        ground_truth = scenario.get_ground_truth()
         expected_business_objective = ground_truth.get("business_objective", "")
         expected_action_items = ground_truth.get("action_items", [])
         expected_domain_knowledge = ground_truth.get("domain_knowledge", [])

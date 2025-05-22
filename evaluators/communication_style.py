@@ -51,10 +51,10 @@ class CommunicationStyleEvaluator(BaseEvaluator):
             Dictionary with scores and explanation
         """
         # Get response text
-        response_text = response.get("response", "")
+        response_text = response.get("content", "")
         
         # Get expected communication style from scenario's ground truth
-        ground_truth = scenario.get_ground_truth(turn_index)
+        ground_truth = scenario.get_ground_truth()
         expected_tone = ground_truth.get("expected_tone", "professional")
         expected_formality = ground_truth.get("expected_formality", "formal")
         communication_guidelines = ground_truth.get("communication_guidelines", [])

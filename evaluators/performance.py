@@ -83,7 +83,7 @@ class PerformanceEvaluator(BaseEvaluator):
         # 3. Evaluate tool usage efficiency
         tool_efficiency_score, tool_efficiency_explanation = self._evaluate_tool_efficiency(
             tool_calls,
-            scenario.get_ground_truth(turn_index)
+            scenario.get_ground_truth()
         )
         
         # Calculate total score

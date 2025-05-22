@@ -34,5 +34,6 @@ env/
 
 # bizCon specific
 output/
+test_output/
 .env
 config/secrets.yaml

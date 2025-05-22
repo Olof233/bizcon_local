@@ -5,6 +5,10 @@ from typing import Dict, List, Any, Optional, Union, Tuple
 import json
 import time
 
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from models.base import ModelClient
 from scenarios.base import BusinessScenario
 from evaluators.base import BaseEvaluator

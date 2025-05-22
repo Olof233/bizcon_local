@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "bizCon: Business Conversation Evaluation Framework for LLMs"
+authors:
+  - family-names: "Sharkar"
+    given-names: "Akram Hasan"
+    orcid: "https://orcid.org/0000-0000-0000-0000"  # Replace with actual ORCID if available
+    affiliation: "Olib AI"
+  - family-names: "Msahal"
+    given-names: "Maya"
+    orcid: "https://orcid.org/0000-0000-0000-0000"  # Replace with actual ORCID if available
+    affiliation: "Olib AI"
+repository-code: "https://github.com/Olib-AI/bizcon"
+url: "https://www.olib.ai"
+abstract: >-
+  bizCon is a comprehensive evaluation framework for benchmarking 
+  Large Language Models on business conversation capabilities. It 
+  evaluates models across multiple dimensions including response 
+  quality, business value, communication style, tool usage, and 
+  performance using realistic business scenarios.
+keywords:
+  - "large language models"
+  - "LLM evaluation"
+  - "business conversations"
+  - "benchmark"
+  - "natural language processing"
+  - "artificial intelligence"
+license: MIT
+version: "0.1.0"
+date-released: "2024-12-19"
+preferred-citation:
+  type: article
+  title: "bizCon: A Comprehensive Evaluation Framework for Business Conversation Capabilities of Large Language Models"
+  authors:
+    - family-names: "Sharkar"
+      given-names: "Akram Hasan"
+      affiliation: "Olib AI"
+    - family-names: "Msahal"
+      given-names: "Maya"
+      affiliation: "Olib AI"
+  journal: "arXiv preprint"
+  year: 2024
+  notes: "Paper to be published on arXiv.org"

@@ -13,7 +13,11 @@ from tqdm import tqdm
 # Use relative import for core module
 from .runner import ScenarioRunner
 
-# Use absolute imports for other modules since they're at the same level as core
+# Add parent directory to path for imports
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from models.base import ModelClient
 from scenarios.base import BusinessScenario
 from evaluators.base import BaseEvaluator
@@ -71,14 +75,14 @@ class EvaluationPipeline:
     
     def _get_default_tools(self) -> Dict[str, BusinessTool]:
         """Get the default set of business tools."""
-        from ..tools.knowledge_base import KnowledgeBaseTool
-        from ..tools.scheduler import SchedulerTool
-        from ..tools.product_catalog import ProductCatalogTool
-        from ..tools.customer_history import CustomerHistoryTool
-        from ..tools.pricing_calculator import PricingCalculatorTool
-        from ..tools.order_management import OrderManagementTool
-        from ..tools.support_ticket import SupportTicketTool
-        from ..tools.document_retrieval import DocumentRetrievalTool
+        from tools.knowledge_base import KnowledgeBaseTool
+        from tools.scheduler import SchedulerTool
+        from tools.product_catalog import ProductCatalogTool
+        from tools.customer_history import CustomerHistoryTool
+        from tools.pricing_calculator import PricingCalculatorTool
+        from tools.order_management import OrderManagementTool
+        from tools.support_ticket import SupportTicketTool
+        from tools.document_retrieval import DocumentRetrievalTool
         
         tools = {
             "knowledge_base": KnowledgeBaseTool(),
@@ -258,8 +262,15 @@ class EvaluationPipeline:
         # Generate CSV data
         self._generate_csv_data(output_dir)
         
-        # Generate report with visualizations
-        generate_report(self.results, output_dir)
+        # Generate report with visualizations  
+        try:
+            from visualization.report import BenchmarkReport
+            report = BenchmarkReport(self.results, output_dir)
+            report.generate_html()
+            report.generate_markdown()
+        except Exception as e:
+            print(f"Warning: Could not generate visualization report: {e}")
+            print("Results saved successfully but report generation failed.")
     
     def _generate_csv_data(self, output_dir: str) -> None:
         """

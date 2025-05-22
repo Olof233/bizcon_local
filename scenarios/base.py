@@ -134,5 +134,28 @@ class BusinessScenario(ABC):
             "num_turns": len(self._conversation_flow)
         }
     
+    def get_complexity(self) -> str:
+        """
+        Get the complexity level of this scenario.
+        
+        Returns:
+            Complexity level string
+        """
+        return self.complexity
+    
+    def get_context(self) -> Dict[str, Any]:
+        """
+        Get contextual information about this scenario.
+        
+        Returns:
+            Dictionary with context information
+        """
+        return {
+            "industry": self.industry,
+            "complexity": self.complexity,
+            "customer_type": "enterprise",  # Default
+            "scenario_type": self.scenario_id.split('_')[0] if '_' in self.scenario_id else "general"
+        }
+    
     def __str__(self) -> str:
         return f"{self.name} ({self.scenario_id})"

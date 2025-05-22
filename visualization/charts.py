@@ -15,7 +15,13 @@ import seaborn as sns
 def set_plotting_style():
     """Set consistent styling for all plots."""
     # Set the style
-    plt.style.use('seaborn-v0_8-whitegrid')
+    try:
+        plt.style.use('seaborn-v0_8-whitegrid')
+    except:
+        try:
+            plt.style.use('seaborn-whitegrid')
+        except:
+            plt.style.use('default')
     
     # Set fonts
     plt.rcParams.update({
