@@ -1,0 +1,148 @@
+[
+  {
+    "product_id": "data_analytics_enterprise",
+    "name": "DataInsight Enterprise",
+    "category": "data_analytics",
+    "description": "Enterprise-grade data analytics platform for large organizations with advanced security and compliance features.",
+    "key_features": [
+      "Real-time data processing",
+      "Advanced visualization tools",
+      "Machine learning capabilities",
+      "Role-based access controls",
+      "Customizable dashboards",
+      "Automated reporting",
+      "Data integration with 200+ sources",
+      "Advanced security features",
+      "Compliance monitoring"
+    ],
+    "benefits": [
+      "Increase operational efficiency",
+      "Make data-driven decisions faster",
+      "Identify business opportunities",
+      "Reduce security risks",
+      "Ensure regulatory compliance"
+    ],
+    "pricing": {
+      "base_price": 1000,
+      "billing_cycle": "monthly",
+      "minimum_commitment": "12 months",
+      "tiers": [
+        {
+          "name": "Standard",
+          "price": 1000,
+          "users": 10,
+          "storage": "500GB"
+        },
+        {
+          "name": "Professional",
+          "price": 2500,
+          "users": 25,
+          "storage": "2TB"
+        },
+        {
+          "name": "Enterprise",
+          "price": 5000,
+          "users": "Unlimited",
+          "storage": "10TB"
+        }
+      ],
+      "add_ons": [
+        {
+          "name": "Additional User Licenses",
+          "price": 100,
+          "unit": "per user/month"
+        },
+        {
+          "name": "Additional Storage",
+          "price": 50,
+          "unit": "per 100GB/month"
+        }
+      ]
+    },
+    "industries": ["healthcare", "finance", "retail", "manufacturing", "technology"],
+    "implementation_time": "3-4 weeks",
+    "support_options": [
+      "24/7 priority support",
+      "Dedicated account manager",
+      "Implementation consulting",
+      "Custom training packages"
+    ]
+  },
+  {
+    "product_id": "cloud_infrastructure_pro",
+    "name": "CloudStack Pro",
+    "category": "cloud_services",
+    "description": "Professional cloud infrastructure solution for mid-size to large businesses with scalable compute, storage, and networking capabilities.",
+    "key_features": [
+      "Elastic compute resources",
+      "Distributed storage system",
+      "Software-defined networking",
+      "Automated load balancing",
+      "Resource monitoring and optimization",
+      "Multi-region deployment",
+      "Disaster recovery options",
+      "Identity and access management",
+      "Compliance certifications (ISO 27001, SOC 2)"
+    ],
+    "benefits": [
+      "Reduce IT infrastructure costs",
+      "Scale resources on demand",
+      "Improve system reliability",
+      "Accelerate application deployment",
+      "Minimize downtime"
+    ],
+    "pricing": {
+      "base_price": 2000,
+      "billing_cycle": "monthly",
+      "minimum_commitment": "6 months",
+      "tiers": [
+        {
+          "name": "Basic",
+          "price": 2000,
+          "compute": "20 vCPUs",
+          "storage": "2TB",
+          "bandwidth": "5TB/month"
+        },
+        {
+          "name": "Advanced",
+          "price": 4500,
+          "compute": "50 vCPUs",
+          "storage": "10TB",
+          "bandwidth": "20TB/month"
+        },
+        {
+          "name": "Enterprise",
+          "price": 9000,
+          "compute": "200 vCPUs",
+          "storage": "50TB",
+          "bandwidth": "100TB/month"
+        }
+      ],
+      "add_ons": [
+        {
+          "name": "Additional Compute",
+          "price": 50,
+          "unit": "per vCPU/month"
+        },
+        {
+          "name": "Additional Storage",
+          "price": 20,
+          "unit": "per 100GB/month"
+        },
+        {
+          "name": "Additional Bandwidth",
+          "price": 100,
+          "unit": "per TB/month"
+        }
+      ]
+    },
+    "industries": ["technology", "finance", "healthcare", "media", "ecommerce"],
+    "implementation_time": "2-3 weeks",
+    "support_options": [
+      "24/7 technical support",
+      "Infrastructure monitoring",
+      "Migration assistance",
+      "Performance optimization consulting"
+    ]
+  }
+]

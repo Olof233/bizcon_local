@@ -1,0 +1,62 @@
+[
+  {
+    "id": "faq-001",
+    "question": "What is the typical implementation timeline for enterprise deployments?",
+    "answer": "Our enterprise software implementations typically take 10-12 weeks, divided into several phases: initial assessment (1-2 weeks), system configuration (3-4 weeks), data migration (2-3 weeks), testing (2 weeks), and training and deployment (2 weeks). Each implementation is assigned a dedicated implementation manager who coordinates the process.",
+    "categories": ["implementation", "enterprise", "timeline"]
+  },
+  {
+    "id": "faq-002",
+    "question": "What training options are available for new customers?",
+    "answer": "We offer multiple training options to ensure your team gets the most out of our solutions: 1) On-site training workshops (typically 2 days), 2) Virtual training sessions (8 hours total, scheduled flexibly), 3) Self-paced learning modules in our customer portal, and 4) Admin-specific advanced training. All enterprise plans include a training package, with additional sessions available for purchase.",
+    "categories": ["training", "implementation", "support"]
+  },
+  {
+    "id": "faq-003",
+    "question": "What support is included during implementation?",
+    "answer": "During implementation, customers receive premium support including: a dedicated implementation manager, 24/7 technical support with priority response times, access to our complete knowledge base and implementation guides, and weekly progress meetings. For healthcare implementations, we also provide compliance specialists to ensure all regulatory requirements are met.",
+    "categories": ["implementation", "support", "healthcare"]
+  },
+  {
+    "id": "faq-004",
+    "question": "Do you offer validation environments for testing?",
+    "answer": "Yes, all enterprise customers receive access to a dedicated validation environment that mirrors their production setup. This allows for thorough testing of configurations, customizations, and integrations before deploying to production. The validation environment is maintained throughout your subscription and can be used for testing upgrades and new features.",
+    "categories": ["implementation", "testing", "validation", "healthcare"]
+  },
+  {
+    "id": "faq-005",
+    "question": "What security certifications does your platform maintain?",
+    "answer": "Our platform maintains a comprehensive set of security certifications, including SOC 2 Type II, ISO 27001, HIPAA compliance (for healthcare deployments), PCI DSS (for payment processing), and GDPR compliance for European customers. We undergo regular third-party security audits and penetration testing to ensure the highest security standards are maintained.",
+    "categories": ["security", "compliance", "certifications", "healthcare", "finance"]
+  },
+  {
+    "id": "faq-006",
+    "question": "What is your uptime guarantee?",
+    "answer": "We guarantee 99.95% uptime for our enterprise customers, which translates to less than 4.5 hours of downtime per year. This is backed by our Service Level Agreement (SLA), which includes financial penalties if we fail to meet these standards. Our system architecture includes redundancy at multiple levels to ensure high availability.",
+    "categories": ["reliability", "performance", "SLA", "enterprise"]
+  },
+  {
+    "id": "faq-007",
+    "question": "How are software updates handled?",
+    "answer": "We release major updates quarterly and minor updates monthly. All updates are deployed to validation environments first, where customers can test for 2-4 weeks before production deployment. Critical security patches may be deployed more rapidly with advance notice. Enterprise customers can schedule their update windows to minimize business disruption.",
+    "categories": ["updates", "maintenance", "implementation"]
+  },
+  {
+    "id": "faq-008",
+    "question": "What APIs are available for integration?",
+    "answer": "Our platform offers comprehensive REST APIs for all major functions, including user management, data import/export, report generation, and administrative controls. We also offer specific integration points for common enterprise systems like Salesforce, SAP, and Microsoft Dynamics. API documentation is available in our developer portal, and enterprise customers receive integration consulting services.",
+    "categories": ["integration", "api", "development", "customization"]
+  },
+  {
+    "id": "faq-009",
+    "question": "How does your pricing model work for large enterprises?",
+    "answer": "Our enterprise pricing is based on a combination of user count, data volume, and required features. Enterprise agreements typically include unlimited users within a department or business unit, with custom pricing for organization-wide deployments. We offer both annual and multi-year contracts with volume discounts. Enterprise customers also receive custom pricing for additional services like training, implementation support, and custom development.",
+    "categories": ["pricing", "enterprise", "contracts"]
+  },
+  {
+    "id": "faq-010",
+    "question": "What compliance features are available for healthcare organizations?",
+    "answer": "For healthcare organizations, we offer specialized compliance features including: HIPAA-compliant data storage and transmission, audit logs for all PHI access, role-based access controls aligned with healthcare workflows, BAA (Business Associate Agreement) included with all contracts, data residency options for regulatory requirements, automatic compliance reporting, and regular security assessments specifically addressing healthcare regulations.",
+    "categories": ["healthcare", "compliance", "security", "industry-specific"]
+  }
+]

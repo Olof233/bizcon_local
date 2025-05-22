@@ -1,0 +1,92 @@
+[
+  {
+    "plan_id": "basic",
+    "name": "Basic",
+    "description": "Entry-level solution for small businesses",
+    "monthly_price": 499,
+    "annual_price": 5489,
+    "annual_discount_percent": 10,
+    "features": [
+      "Core platform access",
+      "5 user licenses",
+      "Standard support (business hours)",
+      "100GB storage",
+      "Basic reporting",
+      "90-day data retention"
+    ],
+    "limitations": [
+      "No API access",
+      "No custom integrations",
+      "Limited data connectors"
+    ],
+    "popular_for": [
+      "Small businesses",
+      "Startups",
+      "Teams with basic data needs"
+    ]
+  },
+  {
+    "plan_id": "professional",
+    "name": "Professional",
+    "description": "Comprehensive solution for growing organizations",
+    "monthly_price": 1299,
+    "annual_price": 13989,
+    "annual_discount_percent": 10,
+    "features": [
+      "All Basic features",
+      "20 user licenses",
+      "Priority support (extended hours)",
+      "1TB storage",
+      "Advanced reporting & analytics",
+      "Custom dashboards",
+      "1-year data retention",
+      "API access",
+      "Standard integrations"
+    ],
+    "limitations": [
+      "Limited customization options",
+      "No dedicated account manager"
+    ],
+    "popular_for": [
+      "Mid-sized companies",
+      "Growing teams",
+      "Departments with data analysis needs"
+    ]
+  },
+  {
+    "plan_id": "enterprise",
+    "name": "Enterprise",
+    "description": "Fully-featured enterprise solution with custom implementation",
+    "monthly_price": 4999,
+    "annual_price": 53989,
+    "annual_discount_percent": 10,
+    "features": [
+      "All Professional features",
+      "Unlimited user licenses",
+      "24/7 premium support",
+      "10TB storage (expandable)",
+      "Enterprise-grade security",
+      "Advanced compliance features",
+      "Unlimited data retention",
+      "Full API access",
+      "Custom integrations",
+      "Dedicated account manager",
+      "Implementation consulting",
+      "Custom training program"
+    ],
+    "limitations": [
+      "Higher minimum commitment (12 months)"
+    ],
+    "popular_for": [
+      "Large enterprises",
+      "Organizations with complex data needs",
+      "Companies with strict security/compliance requirements"
+    ],
+    "customization_options": [
+      "Custom SLAs available",
+      "Private cloud deployment",
+      "Industry-specific compliance packages",
+      "White-label options"
+    ]
+  }
+]

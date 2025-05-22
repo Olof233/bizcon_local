@@ -1,0 +1,44 @@
+# Evaluation configuration for bizCon benchmark
+# This file defines how evaluations should be performed
+
+evaluation:
+  # General settings
+  parallel: true
+  num_runs: 3
+  verbose: true
+  
+  # Evaluator weights
+  evaluator_weights:
+    response_quality: 0.25
+    communication_style: 0.20
+    tool_usage: 0.20
+    business_value: 0.25
+    performance: 0.10
+  
+  # Tool error rates
+  tool_error_rates:
+    knowledge_base: 0.05
+    scheduler: 0.05
+    product_catalog: 0.05
+    customer_history: 0.05
+    pricing_calculator: 0.05
+    order_management: 0.10
+    support_ticket: 0.08
+    document_retrieval: 0.08
+  
+  # Scenario selection
+  scenario_categories:
+    - product_inquiry
+    - appointment_scheduling
+    - technical_support
+    - service_complaints
+    - contract_negotiation
+    - implementation_planning
+    - compliance_inquiry
+    - multi_department
+  
+  # Output settings
+  output:
+    report_format: "html"
+    include_charts: true
+    include_raw_data: true
