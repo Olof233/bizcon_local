@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name="bizcon",
-    version="0.1.0",
+    version="0.4.0",
     author="Akram Hasan Sharkar",
     author_email="akram@olib.ai",
-    description="Business Conversation Evaluation Framework for LLMs",
+    description="Business Conversation Evaluation Framework for LLMs with Advanced Visualization Dashboards",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/Olib-AI/bizcon",
@@ -40,6 +40,20 @@ setup(
         "pdfkit",
         "markdown",
     ],
+    extras_require={
+        "advanced": [
+            "plotly>=5.0.0",
+            "flask>=2.0.0",
+            "jinja2",
+            "scipy",
+        ],
+        "all": [
+            "plotly>=5.0.0", 
+            "flask>=2.0.0",
+            "jinja2",
+            "scipy",
+        ]
+    },
     entry_points={
         "console_scripts": [
             "bizcon=cli:main",

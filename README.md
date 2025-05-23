@@ -101,8 +101,14 @@ bizCon is a specialized evaluation framework designed to benchmark Large Languag
 git clone https://github.com/Olib-AI/bizcon.git
 cd bizcon
 
-# Install dependencies
+# Basic installation
 pip install -e .
+
+# Install with advanced visualization features (use quotes for zsh)
+pip install -e ".[advanced]"
+
+# Install all optional features
+pip install -e ".[all]"
 ```
 
 ### Basic Usage
@@ -207,9 +213,13 @@ bizcon/
 │   ├── knowledge_base.py
 │   ├── scheduler.py
 │   └── product_catalog.py
-├── visualization/         # Report generation
-│   ├── charts.py
-│   └── report.py
+├── visualization/         # Advanced visualization and reporting
+│   ├── charts.py          # Static matplotlib charts
+│   ├── interactive_charts.py  # Interactive Plotly charts
+│   ├── dashboard.py       # Basic Flask dashboard
+│   ├── advanced_dashboard.py  # Advanced dashboard with filtering
+│   ├── analysis_utils.py  # Statistical analysis tools
+│   └── report.py          # Report generation
 └── data/                  # Sample business data
     ├── knowledge_base/
     ├── products/
@@ -320,6 +330,23 @@ models:
       seed: 42
       top_p: 0.9
 ```
+
+### Advanced Visualization Dashboard
+```bash
+# Install advanced features first (use quotes for zsh)
+pip install -e ".[advanced]"
+
+# Launch interactive dashboard with advanced features
+python examples/advanced_dashboard_demo.py --results-dir output/
+
+# Launch on custom host/port with auto-refresh
+python examples/advanced_dashboard_demo.py --host 0.0.0.0 --port 8080
+
+# Disable auto-refresh for static analysis
+python examples/advanced_dashboard_demo.py --no-auto-refresh
+```
+
+**Note:** Advanced visualization features require additional dependencies (Plotly, Flask, SciPy). Install with `pip install "bizcon[advanced]"` (quotes required for zsh) to enable these features.
 
 ### Scenario Categories
 ```bash
@@ -440,20 +467,31 @@ A detailed research paper describing the methodology, evaluation framework, and 
 <details>
 <summary><strong>🚀 View upcoming features and release history</strong></summary>
 
+### ✅ Recent Additions (May 2025)
+
+| Feature | Priority | Status | Completed |
+|---------|----------|--------|-----------|
+| 📊 **Advanced Visualization Dashboards** | High | ✅ Complete | May 2025 |
+| 🎯 **Interactive Plotly Charts** | High | ✅ Complete | May 2025 |
+| 🔄 **Real-time Dashboard Filtering** | Medium | ✅ Complete | May 2025 |
+| 📈 **Statistical Analysis Tools** | Medium | ✅ Complete | May 2025 |
+| 🔍 **Model Comparison Engine** | Medium | ✅ Complete | May 2025 |
+
 ### 🔮 Upcoming Features
 
 | Feature | Priority | Status | ETA |
 |---------|----------|--------|-----|
-| 🌐 **More LLM Providers** (Cohere, Together AI) | High | Planning | Q2 2024 |
-| 📊 **Advanced Visualization Dashboards** | High | In Progress | Q2 2024 |
-| 🏭 **Industry-Specific Scenario Packs** | Medium | Planning | Q3 2024 |
-| ⚡ **Real-time Evaluation APIs** | Medium | Researching | Q3 2024 |
-| 🔗 **Custom Webhook Integrations** | Low | Backlog | Q4 2024 |
-| 🌍 **Multi-language Support** | Low | Backlog | Q4 2024 |
+| 🌐 **More LLM Providers** (Cohere, Together AI) | High | Planning | Q3 2025 |
+| 🏭 **Industry-Specific Scenario Packs** | Medium | Planning | Q4 2025 |
+| ⚡ **Real-time Evaluation APIs** | Medium | Researching | Q4 2025 |
+| 🔗 **Custom Webhook Integrations** | Low | Backlog | Q1 2026 |
+| 🌍 **Multi-language Support** | Low | Backlog | Q1 2026 |
+| 🤖 **AI-Powered Insights** | Medium | Planning | Q3 2025 |
 
 ### 📋 Version History
 
-- **v0.3.0** *(Current)*: Multi-provider support, tool integration, success rate differentiation
+- **v0.4.0** *(Current)*: Advanced visualization dashboards, interactive Plotly charts, real-time filtering, statistical analysis
+- **v0.3.0**: Multi-provider support, tool integration, success rate differentiation
 - **v0.2.0**: Added visualization and reporting capabilities
 - **v0.1.0**: Initial release with core evaluation framework
 

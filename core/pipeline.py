@@ -262,6 +262,9 @@ class EvaluationPipeline:
         # Generate CSV data
         self._generate_csv_data(output_dir)
         
+        # Save individual model files for advanced dashboard
+        self._save_model_files_for_dashboard(output_dir)
+        
         # Generate report with visualizations  
         try:
             from visualization.report import BenchmarkReport
@@ -455,3 +458,91 @@ class EvaluationPipeline:
             transformed[model_id] = model_data
         
         return transformed
+    
+    def _save_model_files_for_dashboard(self, output_dir: str) -> None:
+        """
+        Save individual model result files for the advanced dashboard.
+        
+        Args:
+            output_dir: Directory to save model files
+        """
+        # Transform results for dashboard format
+        dashboard_data = self._transform_results_for_report()
+        
+        # Save each model's results as a separate JSON file
+        for model_id, model_data in dashboard_data.items():
+            # Extract model name from the models list
+            model_name = f"model_{model_id}"
+            
+            try:
+                # Try to get model object directly
+                model_idx = int(model_id)
+                if model_idx < len(self.models):
+                    model_obj = self.models[model_idx]
+                    model_name = getattr(model_obj, 'model_name', f"model_{model_id}")
+                else:
+                    # Fallback: check models data in results
+                    models_data = self.results.get("models", [])
+                    if model_idx < len(models_data) and isinstance(models_data[model_idx], dict):
+                        model_name = models_data[model_idx].get("model_name", f"model_{model_id}")
+            except (ValueError, IndexError, AttributeError):
+                # Keep default name if extraction fails
+                pass
+            
+            # Add model_name to the data
+            model_data["model_name"] = model_name
+            
+            # Add overall evaluator_scores if not present
+            if "evaluator_scores" not in model_data.get("overall", {}):
+                # Convert category scores to evaluator scores format
+                category_scores = model_data["overall"].get("category_scores", {})
+                evaluator_scores = {}
+                
+                # Map display names to evaluator names
+                name_mapping = {
+                    "Response Quality": "response_quality",
+                    "Business Value": "business_value",
+                    "Communication Style": "communication_style",
+                    "Tool Usage": "tool_usage",
+                    "Performance": "performance"
+                }
+                
+                for display_name, score in category_scores.items():
+                    evaluator_name = name_mapping.get(display_name, display_name.lower().replace(" ", "_"))
+                    evaluator_scores[evaluator_name] = score
+                
+                model_data["overall"]["evaluator_scores"] = evaluator_scores
+            
+            # Add overall_score at top level if not present
+            if "overall_score" not in model_data["overall"]:
+                model_data["overall"]["overall_score"] = model_data["overall"].get("score", 0)
+            
+            # Ensure each run has proper structure with evaluator_scores for turns
+            for run in model_data.get("runs", []):
+                for turn in run.get("turns", []):
+                    if "evaluator_scores" not in turn:
+                        # Extract evaluator scores from evaluation data
+                        turn_evaluator_scores = {}
+                        evaluation = turn.get("evaluation", {})
+                        
+                        for evaluator_name, eval_data in evaluation.items():
+                            if isinstance(eval_data, dict) and "score" in eval_data:
+                                # Convert evaluator name to snake_case
+                                snake_case_name = evaluator_name.lower().replace(" ", "_")
+                                turn_evaluator_scores[snake_case_name] = eval_data["score"]
+                        
+                        turn["evaluator_scores"] = turn_evaluator_scores
+                    
+                    # Ensure overall_score exists for each turn
+                    if "overall_score" not in turn and "score" in turn:
+                        turn["overall_score"] = turn["score"]
+                    elif "overall_score" not in turn:
+                        # Calculate from evaluator scores
+                        scores = turn.get("evaluator_scores", {}).values()
+                        turn["overall_score"] = sum(scores) / len(scores) if scores else 0
+            
+            # Save individual model file (remove 'model_' prefix if present)
+            file_name = model_name.replace("model_", "") if model_name.startswith("model_") else model_name
+            model_file = os.path.join(output_dir, f"{file_name}.json")
+            with open(model_file, "w") as f:
+                json.dump(model_data, f, indent=2)
