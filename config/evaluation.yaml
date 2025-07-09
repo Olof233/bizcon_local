@@ -3,7 +3,7 @@
 
 evaluation:
   # General settings
-  parallel: true
+  parallel: false
   num_runs: 3
   verbose: true
   

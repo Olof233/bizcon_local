@@ -2,11 +2,14 @@
 Models package for bizCon framework.
 """
 from typing import Dict, List, Optional, Any, Union
+from os.path import isdir
 
 from .base import ModelClient
 from .openai import OpenAIClient
 from .anthropic import AnthropicClient
 from .mistral import MistralAIClient
+from .local import LocalClient
+
 
 
 def get_model_client(provider: str, model_name: str, **kwargs) -> ModelClient:
@@ -30,6 +33,8 @@ def get_model_client(provider: str, model_name: str, **kwargs) -> ModelClient:
         return AnthropicClient(model_name=model_name, **kwargs)
     elif provider.lower() in ["mistral", "mistralai"]:
         return MistralAIClient(model_name=model_name, **kwargs)
+    elif isdir(provider):
+        return LocalClient(model_name=model_name, **kwargs)
     else:
         raise ValueError(f"Unsupported model provider: {provider}")
 
