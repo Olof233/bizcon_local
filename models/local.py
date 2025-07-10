@@ -9,6 +9,8 @@ import tiktoken
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import re
+from tools import get_default_tools
+from local_llm_function_calling import Generator
 
 from .base import ModelClient
 
@@ -72,7 +74,8 @@ class LocalClient(ModelClient):
                 "max_tokens": self.max_tokens,
                 **self.params
             }
-            
+
+
             # Add tools if provided
             if tools:
                 for tool in tools:
@@ -84,11 +87,9 @@ class LocalClient(ModelClient):
                 tool_desc = "no tools available"
             system_msg = {
                 "role": "system",
-                "content": f"You can call the tool in the following format:<function_call name='tool_name'>parameters</function_call>  available tools:  {tool_desc}"
+                "content": f"You can call the tool in the following format:<function_call name='tool_name'>parameters</function_call>  available tools:  {tool_desc}. Call the tool when you need to, and do not call the tool when you do not need it. If you call the tool, please make sure to provide all the required parameters in the function call. If you are not sure about the parameters, you can ask the user for clarification. Do not use any other format to call the tool, only use <function_call name='tool_name'>parameters</function_call>. If you do not need to call any tool, just answer the question directly without calling and declare that you do not need the tools." #type: ignore
                 }
-            messages = [system_msg] + messages
-            print(messages)
-            
+            messages.insert(0, system_msg)
             
             # Make the call
             text = self.tokenizer.apply_chat_template(
@@ -124,18 +125,26 @@ class LocalClient(ModelClient):
             pattern = r"<function_call name=['\"](.*?)['\"]>(.*?)</function_call>"
             matches = re.findall(pattern, response, re.DOTALL)
             if matches:
-                result["tool_calls"] = [
-                    {
-                        "id": f"call_{i+1}",
-                        "type": "function",
-                        "function": {
-                            "name": name,
-                            "arguments": args.strip()
-                        }
-                    }
-                    for i, (name, args) in enumerate(matches)
-                ]
-            
+                generator = Generator.hf(tool_results, self.model) #type: ignore
+                params = generator.generate(messages[0]['content'])
+                print(params)
+
+                # tool_objs = get_default_tools()
+                # tool_results = []
+                # for name, args in matches:
+                #     tool = tool_objs.get(name)
+                #     if tool:
+                #         tool_result = tool.call(params)
+                #     else:
+                #         tool_result = {"error": f"Tool '{name}' not found"}
+                #     tool_results.append({
+                #         "name": name,
+                #         "arguments": params,
+                #         "result": tool_result
+                #     })
+                # if tool_results:
+                #     result["tool_results"] = tool_results
+                    
             return result
             
         except Exception as e:

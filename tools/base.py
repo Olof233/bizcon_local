@@ -144,7 +144,7 @@ class BusinessTool(ABC):
             "calls": self.call_count,
             "errors": self.error_count,
             "success_rate": (self.call_count - self.error_count) / self.call_count if self.call_count > 0 else 0
-        }
+        } # type: ignore
     
     def reset_stats(self):
         """Reset usage statistics."""

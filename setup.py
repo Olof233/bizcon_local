@@ -6,8 +6,6 @@ setup(
     author="Akram Hasan Sharkar",
     author_email="akram@olib.ai",
     description="Business Conversation Evaluation Framework for LLMs with Advanced Visualization Dashboards",
-    long_description=open("README.md", encoding='utf-8').read(),
-    long_description_content_type="text/markdown",
     url="https://github.com/Olib-AI/bizcon",
     packages=find_packages(),
     py_modules=['cli'],
