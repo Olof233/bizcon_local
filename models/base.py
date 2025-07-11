@@ -32,6 +32,7 @@ class ModelClient(ABC):
         self.total_completion_tokens = 0
         self.total_cost = 0.0
         self.api_calls = 0
+        self.input = ""
     
     @abstractmethod
     def generate_response(self, 
@@ -86,6 +87,15 @@ class ModelClient(ABC):
             "completion_tokens": self.total_completion_tokens,
             "total_cost": self.total_cost
         }
+    
+    def get_input(self) -> str:
+        """
+        Get the input text used for the last generation.
+        
+        Returns:
+            Input text
+        """
+        return self.input
     
     def __str__(self) -> str:
         return f"{self.__class__.__name__}({self.model_name})"

@@ -9,6 +9,7 @@ from .openai import OpenAIClient
 from .anthropic import AnthropicClient
 from .mistral import MistralAIClient
 from .local import LocalClient
+from .azure import AzureClient
 
 
 
@@ -33,6 +34,8 @@ def get_model_client(provider: str, model_name: str, **kwargs) -> ModelClient:
         return AnthropicClient(model_name=model_name, **kwargs)
     elif provider.lower() in ["mistral", "mistralai"]:
         return MistralAIClient(model_name=model_name, **kwargs)
+    elif provider.lower() == "azure":
+        return AzureClient(model_name=model_name, **kwargs)
     elif isdir(provider):
         return LocalClient(model_name=model_name, **kwargs)
     else:

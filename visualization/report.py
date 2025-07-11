@@ -29,7 +29,7 @@ from .charts import (
 class BenchmarkReport:
     """Generator for benchmark reports in HTML and PDF formats."""
     
-    def __init__(self, results: Dict[str, Any], output_dir: str = None):
+    def __init__(self, results: Dict[str, Any], output_dir: str = None): #type: ignore
         """
         Initialize the report generator.
         
@@ -283,7 +283,7 @@ class BenchmarkReport:
         </html>
         """
         
-        with open(self.template_dir / 'report.html', 'w') as f:
+        with open(self.template_dir / 'report.html', 'w', encoding='utf-8') as f:
             f.write(report_html)
     
     def _generate_charts(self) -> Dict[str, str]:
@@ -544,8 +544,8 @@ class BenchmarkReport:
         # Finding 2: Best and worst evaluator categories
         if models and all(scores[model].get('categories') for model in models):
             category_scores = {}
-            for model in models:
-                for category, score in scores[model]['categories'].items():
+            for model in models: 
+                for category, score in scores[model]['categories'].items(): #type: ignore
                     if category not in category_scores:
                         category_scores[category] = []
                     category_scores[category].append(score)
@@ -579,7 +579,7 @@ class BenchmarkReport:
         category_scores = {}
         for model in models:
             model_categories = scores[model].get('categories', {})
-            for category, score in model_categories.items():
+            for category, score in model_categories.items(): #type: ignore
                 if category not in category_scores:
                     category_scores[category] = []
                 category_scores[category].append(score)
@@ -843,7 +843,7 @@ class BenchmarkReport:
         return str(output_path)
 
 
-def generate_report(results_file: str, output_dir: str = None, format: str = 'html') -> str:
+def generate_report(results_file: str, output_dir: str = None, format: str = 'html') -> str: #type: ignore
     """
     Generate a benchmark report in the specified format.
     
@@ -856,7 +856,7 @@ def generate_report(results_file: str, output_dir: str = None, format: str = 'ht
         Path to the generated report file
     """
     # Load results from file
-    with open(results_file, 'r') as f:
+    with open(results_file, 'r', encoding='utf-8') as f:
         results = json.load(f)
     
     # Create report generator

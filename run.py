@@ -95,6 +95,8 @@ def load_models_from_config(config):
                 api_key=api_key,
                 temperature=model_config.get('temperature', 0.7),
                 max_tokens=model_config.get('max_tokens', 1024),
+                endpoint=model_config.get('azure_endpoint'),  # For Azure models
+                version=model_config.get('api_version'),  # For Azure models
                 **(model_config.get('parameters', {}))
             )
             models.append(model)
