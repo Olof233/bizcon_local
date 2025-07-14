@@ -54,9 +54,9 @@ class BusinessValueEvaluator(BaseEvaluator):
         
         # Get expected business value from scenario's ground truth
         ground_truth = scenario.get_ground_truth()
-        expected_business_objective = ground_truth.get("business_objective", "")
-        expected_action_items = ground_truth.get("action_items", [])
-        expected_domain_knowledge = ground_truth.get("domain_knowledge", [])
+        expected_business_objective = ground_truth.get("business_objective", None)
+        expected_action_items = ground_truth.get("action_items", None)
+        expected_domain_knowledge = ground_truth.get("domain_knowledge", None)
         
         # Initialize scores and explanations
         objective_score = 0.0
@@ -86,7 +86,10 @@ class BusinessValueEvaluator(BaseEvaluator):
             else:
                 objective_score = 0.0
                 objective_explanation = "Response does not address the core business objective"
-        
+        else:
+            objective_score = 4.0
+            objective_explanation = "No specific business objective expected, response is acceptable"
+
         # 2. Evaluate providing actionable information
         if expected_action_items:
             action_items_found = 0
@@ -111,6 +114,9 @@ class BusinessValueEvaluator(BaseEvaluator):
             else:
                 actionable_score = 0.0
                 actionable_explanation = "Response provides no actionable information"
+        else:
+            actionable_score = 3.0
+            actionable_explanation = "No specific action items expected, but response is acceptable"
         
         # 3. Evaluate business acumen/domain knowledge
         if expected_domain_knowledge:
@@ -136,6 +142,9 @@ class BusinessValueEvaluator(BaseEvaluator):
             else:
                 acumen_score = 0.0
                 acumen_explanation = "Response demonstrates no relevant business acumen or domain knowledge"
+        else:
+            acumen_score = 3.0
+            acumen_explanation = "No specific domain knowledge expected, but response is acceptable"
         
         # Tool usage bonus: Check if the model used business-relevant tools effectively
         tool_usage_bonus = 0.0

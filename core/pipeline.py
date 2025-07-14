@@ -9,6 +9,7 @@ import time
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
+import time
 
 # Use relative import for core module
 from .runner import ScenarioRunner
@@ -142,6 +143,7 @@ class EvaluationPipeline:
             results = []
             for task in tqdm(evaluation_tasks, disable=not self.verbose):
                 results.append(self._run_evaluation_task(task))
+                time.sleep(1)  # Slight delay to avoid overwhelming API limits
         
         # Organize results by model and scenario
         for result in results:

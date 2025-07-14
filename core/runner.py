@@ -4,6 +4,7 @@ Scenario runner for executing business conversation scenarios.
 from typing import Dict, List, Any, Optional, Union, Tuple
 import json
 import time
+import copy
 
 import sys
 import os
@@ -38,6 +39,15 @@ class ScenarioRunner:
         self.tools = tools
         self.conversation_history = []
         self.tool_calls_history = []
+
+    def remove_required_from_properties(self, tools):
+        new_tool_definitions = copy.deepcopy(tools)
+        for tool in new_tool_definitions:
+            properties = tool.get('function', {}).get('parameters', {}).get('properties', {})
+            for prop_name, prop in properties.items():
+                if 'required' in prop:
+                    del prop['required']
+        return new_tool_definitions
     
     def run(self) -> Dict[str, Any]:
         """
@@ -65,6 +75,7 @@ class ScenarioRunner:
         for tool_id in self.scenario.tools_required:
             if tool_id in self.tools:
                 tool_definitions.append(self.tools[tool_id].get_definition())
+        tool_definitions = self.remove_required_from_properties(tool_definitions)
         
         # Start the conversation with the initial message
         initial_message = self.scenario.get_initial_message()
@@ -76,6 +87,7 @@ class ScenarioRunner:
         
         while current_turn < max_turns:
             # Generate model response
+            tool_using = False
             response = self._generate_response(tool_definitions)
             
             # Handle tool calls if present
@@ -83,6 +95,8 @@ class ScenarioRunner:
             if "tool_calls" in response:
                 tool_calls = self._process_tool_calls(response["tool_calls"])
                 self.tool_calls_history.append(tool_calls)
+                response = self._generate_response(None)
+                tool_using = True
             
             # Evaluate the response
             turn_evaluation = self._evaluate_response(response, current_turn, tool_calls)
@@ -90,7 +104,9 @@ class ScenarioRunner:
             # Add to results
             results["turns"].append({
                 "turn_index": current_turn,
-                "user_message": self.conversation_history[-2]["content"] if len(self.conversation_history) >= 2 else "",
+                "user_message": self.conversation_history[-4]["content"] if len(self.conversation_history) >= 2 and tool_using
+                else self.conversation_history[-2]["content"] if len(self.conversation_history) >= 2 and not tool_using
+                else "",
                 "model_response": response,
                 "tool_calls": tool_calls,
                 "evaluation": turn_evaluation
@@ -111,7 +127,7 @@ class ScenarioRunner:
         
         return results
     
-    def _generate_response(self, tool_definitions: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def _generate_response(self, tool_definitions: List[Dict[str, Any]] | None) -> Dict[str, Any]:
         """
         Generate a response from the model.
         

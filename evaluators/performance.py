@@ -83,13 +83,13 @@ class PerformanceEvaluator(BaseEvaluator):
         # 3. Evaluate tool usage efficiency
         tool_efficiency_score, tool_efficiency_explanation = self._evaluate_tool_efficiency(
             tool_calls,
-            scenario.get_ground_truth()
+            scenario.get_conversation()
         )
         
         # Calculate total score
         total_score = response_time_score + token_efficiency_score + tool_efficiency_score
         
-        # Normalize to 0-10 scale
+        # Normalize to 0-10 scalew
         normalized_score = self.normalize_score(total_score)
         
         return {
@@ -219,7 +219,7 @@ class PerformanceEvaluator(BaseEvaluator):
         
         return score, explanation
     
-    def _evaluate_tool_efficiency(self, tool_calls: List[Dict[str, Any]], ground_truth: Dict[str, Any]) -> tuple:
+    def _evaluate_tool_efficiency(self, tool_calls: List[Dict[str, Any]], ground_truth: List[Dict[str, Any]]) -> tuple:
         """
         Evaluate tool usage efficiency.
         
@@ -231,7 +231,9 @@ class PerformanceEvaluator(BaseEvaluator):
             Tuple of (score, explanation)
         """
         # Get expected tool usage
-        expected_tools = ground_truth.get("expected_tools", [])
+        expected_tools = []
+        for i in ground_truth:
+            expected_tools = i.get("expected_tools", [])
         expected_tool_count = len(expected_tools)
         
         # If no tools are expected, return full score

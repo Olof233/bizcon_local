@@ -126,8 +126,21 @@ class KnowledgeBaseTool(BusinessTool):
         
         for category, articles in self.kb_data.items():
             # Skip if categories specified and this category not included
-            if categories and not any(cat in categories for cat in [category] + [article.get("categories", []) for article in articles]):
-                continue
+            for category, articles in self.kb_data.items():
+                # 判断当前类别或任意文章的类别是否与用户指定的categories有交集
+                if categories:
+                    # 展平成一维字符串列表
+                    all_category_labels = [category]
+                    for article in articles:
+                        article_cats = article.get("categories", [])
+                        if isinstance(article_cats, list):
+                            all_category_labels.extend(article_cats)
+                        elif isinstance(article_cats, str):
+                            all_category_labels.append(article_cats)
+                    # 如果没有任何交集则跳过
+                    if not any(cat in categories for cat in all_category_labels):
+                        print(f"Skipping category '{all_category_labels}' as it does not match specified categories.")
+                        continue
                 
             for article in articles:
                 # Check if query terms match article content

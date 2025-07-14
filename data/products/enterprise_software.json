@@ -59,7 +59,7 @@
         }
       ]
     },
-    "industries": ["healthcare", "finance", "retail", "manufacturing", "technology"],
+    "industries": ["healthcare", "financial_services", "retail", "manufacturing", "technology"],
     "implementation_time": "3-4 weeks",
     "support_options": [
       "24/7 priority support",
@@ -136,7 +136,7 @@
         }
       ]
     },
-    "industries": ["technology", "finance", "healthcare", "media", "ecommerce"],
+    "industries": ["technology", "financial_services", "healthcare", "media", "ecommerce"],
     "implementation_time": "2-3 weeks",
     "support_options": [
       "24/7 technical support",

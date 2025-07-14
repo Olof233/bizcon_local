@@ -55,8 +55,11 @@ class ToolUsageEvaluator(BaseEvaluator):
         response_text = response.get("content", "")
         
         # Get expected tool calls from scenario's ground truth
-        ground_truth = scenario.get_ground_truth()
-        expected_tool_calls = ground_truth.get("expected_tool_calls", [])
+        conversation = scenario.get_conversation()
+        if turn_index < len(conversation):
+            expected_tool_calls = conversation[turn_index].get("expected_tool_calls", [])
+        else:
+            expected_tool_calls = []
         
         # Initialize scores and explanations
         selection_score = 0.0

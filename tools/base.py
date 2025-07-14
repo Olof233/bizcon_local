@@ -87,19 +87,12 @@ class BusinessTool(ABC):
             return self._generate_random_error()
         
         # Call the actual implementation
-        try:
-            result = self._execute(parameters)
-            return {
-                "result": result,
-                "status": "success"
-            }
-        except Exception as e:
-            self.error_count += 1
-            return {
-                "error": type(e).__name__,
-                "message": str(e),
-                "status": "error"
-            }
+        
+        result = self._execute(parameters)
+        return {
+            "result": result,
+            "status": "success"
+        }
     
     @abstractmethod
     def _execute(self, parameters: Dict[str, Any]) -> Any:

@@ -203,11 +203,10 @@ class ProductCatalogTool(BusinessTool):
         
         # Otherwise, filter products based on criteria
         filtered_products = self.product_data.copy()
-        
         # Filter by category
         if product_category:
             filtered_products = [p for p in filtered_products if p.get("category") == product_category]
-        
+
         # Filter by industry
         if industry:
             filtered_products = [p for p in filtered_products if industry in p.get("industries", [])]

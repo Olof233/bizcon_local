@@ -12,7 +12,15 @@ from .base import ModelClient
 
 class AzureClient(ModelClient):
     """Client for Azure OpenAI models."""
-    
+
+    # Cost per 1000 tokens (as of May 2024)
+    PRICING = {
+        "gpt-4-turbo": {"input": 0.01, "output": 0.03},
+        "gpt-4": {"input": 0.03, "output": 0.06},
+        "gpt-4-32k": {"input": 0.06, "output": 0.12},
+        "gpt-3.5-turbo": {"input": 0.0005, "output": 0.0015},
+        "gpt-3.5-turbo-16k": {"input": 0.001, "output": 0.002}
+    }
     
     def __init__(self, 
                  model_name: str, 
@@ -71,7 +79,12 @@ class AzureClient(ModelClient):
         Returns:
             Dictionary with response content and metadata
         """
+    
+
         try:
+            # Count tokens in the prompt
+            prompt_tokens = sum(self.get_token_count(msg.get("content", "")) for msg in messages)
+
             # Prepare API call parameters
             params = {
                 "model": self.model_name,
@@ -93,22 +106,40 @@ class AzureClient(ModelClient):
             # Extract response content
             message = response.choices[0].message
             result = {"content": message.content or ""}
+
             
             # # Add tool calls if present
-            # if hasattr(message, "tool_calls") and message.tool_calls:
-            #     result["tool_calls"] = [
-            #         {
-            #             "id": tool_call.id,
-            #             "type": "function",
-            #             "function": {
-            #                 "name": tool_call.function.name,
-            #                 "arguments": tool_call.function.arguments
-            #             }
-            #         }
-            #         for tool_call in message.tool_calls
-            #     ]
+            if hasattr(message, "tool_calls") and message.tool_calls:
+                result["tool_calls"] = [
+                    {
+                        "id": tool_call.id,
+                        "type": "function",
+                        "function": {
+                            "name": tool_call.function.name,
+                            "arguments": tool_call.function.arguments
+                        }
+                    }
+                    for tool_call in message.tool_calls
+                ]
             
-          
+            # Update token usage
+            completion_tokens = response.usage.completion_tokens
+            prompt_tokens = response.usage.prompt_tokens
+            total_tokens = response.usage.total_tokens
+            
+            self.total_tokens_used += total_tokens
+            self.total_prompt_tokens += prompt_tokens
+            self.total_completion_tokens += completion_tokens
+            
+            # Update cost calculation
+            model_base = self.model_name.split("-")[0] + "-" + self.model_name.split("-")[1]
+            if model_base in self.PRICING:
+                input_cost = (prompt_tokens / 1000) * self.PRICING[model_base]["input"]
+                output_cost = (completion_tokens / 1000) * self.PRICING[model_base]["output"]
+                self.total_cost += input_cost + output_cost
+            
+            self.api_calls += 1
+
             return result
             
         except Exception as e:

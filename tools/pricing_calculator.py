@@ -68,29 +68,29 @@ class PricingCalculatorTool(BusinessTool):
     
     def _load_pricing_data(self) -> None:
         """Load pricing data from files."""
-        self.pricing_data = {}
+        # self.pricing_data = {}
         
         # Path to data directory
-        data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "pricing")
+        # data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "pricing")
         
-        # Load pricing data files
-        if os.path.exists(data_dir):
-            for filename in os.listdir(data_dir):
-                if filename.endswith(".json"):
-                    try:
-                        file_path = os.path.join(data_dir, filename)
-                        with open(file_path, "r") as f:
-                            data = json.load(f)
-                            # Handle both list and dict formats
-                            if isinstance(data, list):
-                                # Convert list to dict using plan_id as key
-                                for item in data:
-                                    if isinstance(item, dict) and "plan_id" in item:
-                                        self.pricing_data[item["plan_id"]] = item
-                            elif isinstance(data, dict):
-                                self.pricing_data.update(data)
-                    except Exception as e:
-                        print(f"Error loading pricing data file {filename}: {e}")
+        # # Load pricing data files
+        # if os.path.exists(data_dir):
+        #     for filename in os.listdir(data_dir):
+        #         if filename.endswith(".json"):
+        #             try:
+        #                 file_path = os.path.join(data_dir, filename)
+        #                 with open(file_path, "r") as f:
+        #                     data = json.load(f)
+        #                     # Handle both list and dict formats
+        #                     if isinstance(data, list):
+        #                         # Convert list to dict using plan_id as key
+        #                         for item in data:
+        #                             if isinstance(item, dict) and "plan_id" in item:
+        #                                 self.pricing_data[item["plan_id"]] = item
+        #                     elif isinstance(data, dict):
+        #                         self.pricing_data.update(data)
+        #             except Exception as e:
+        #                 print(f"Error loading pricing data file {filename}: {e}")
         
         # Create fallback data if no files were loaded
         if not self.pricing_data:
